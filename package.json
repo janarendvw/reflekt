@@ -25,7 +25,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.11.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
@@ -38,6 +38,8 @@
     "typescript": "^5"
   },
   "prettier": {
-    "plugins": ["prettier-plugin-tailwindcss"]
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }
