@@ -20,7 +20,7 @@ import { Separator } from "@/components/ui/separator";
 
 type Props = {};
 
-function navbar({}: Props) {
+function Navbar({}: Props) {
   return (
     <>
       <nav className="flex w-full items-baseline justify-between px-2 py-2">
@@ -56,4 +56,4 @@ function navbar({}: Props) {
   );
 }
 
-export default navbar;
+export default Navbar;
