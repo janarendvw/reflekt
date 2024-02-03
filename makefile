@@ -7,9 +7,9 @@ build:
 restart:
 	docker-compose down
 	docker-compose up -d
-logs:
-	docker-compose logs -f
 studio:
 	pnpm dlx prisma studio
 seed:
 	pnpm prisma db seed
+dev:
+	pnpm dev

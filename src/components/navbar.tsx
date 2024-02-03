@@ -23,8 +23,9 @@ type Props = {};
 function Navbar({}: Props) {
   return (
     <>
-      <nav className="flex w-full items-baseline justify-between px-2 py-2">
+      <nav className="items-center flex w-full justify-between px-2 py-2">
         <h1 className="ml-2 text-xl font-bold">REFLEKT</h1>
+
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -36,7 +37,7 @@ function Navbar({}: Props) {
         </NavigationMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="cursor-pointer mr-2">
+            <Avatar className="mr-2 cursor-pointer">
               <AvatarFallback>T</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
