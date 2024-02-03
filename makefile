@@ -11,3 +11,5 @@ logs:
 	docker-compose logs -f
 studio:
 	pnpm dlx prisma studio
+seed:
+	pnpm prisma db seed
