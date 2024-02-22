@@ -20,7 +20,7 @@ const generateReflections = () => {
   for(let i = 0; i < Math.floor(Math.random() * 10); i++) {
     reflections.push({
       title: faker.lorem.sentence(),
-      content: faker.lorem.paragraph(),
+      content: faker.lorem.paragraphs(),
       skills: [Object.values(Skills)[Math.floor(Math.random() * Object.values(Skills).length)]],
       actionPoints: {
         create: generateActionPoints(),
@@ -39,7 +39,7 @@ async function main() {
   await prisma.reflection.deleteMany();
   await prisma.user.deleteMany();
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1000; i++) {
     const user = await prisma.user.create({
       data: {
         name: faker.person.fullName(),
