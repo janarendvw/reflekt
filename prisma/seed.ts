@@ -39,7 +39,7 @@ async function main() {
   await prisma.reflection.deleteMany();
   await prisma.user.deleteMany();
 
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 20; i++) {
     const user = await prisma.user.create({
       data: {
         name: faker.person.fullName(),

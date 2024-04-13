@@ -1,15 +1,16 @@
 up:
-	docker-compose up -d
+	sudo docker-compose up -d
 down:
-	docker-compose down
-build:
-	docker-compose build
+	sudo docker-compose down
+rebuild:
+	sudo docker-compose down
+	sudo docker-compose up -d --build
 restart:
-	docker-compose down
-	docker-compose up -d
+	sudo docker-compose down
+	sudo docker-compose up -d
 studio:
-	pnpm dlx prisma studio
+	sudo pnpm dlx prisma studio
 seed:
-	pnpm prisma db seed
+	sudo pnpm prisma db seed
 dev:
-	pnpm dev
+	sudo pnpm dev
