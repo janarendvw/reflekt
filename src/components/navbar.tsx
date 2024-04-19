@@ -28,15 +28,22 @@ function Navbar({}: Props) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="mr-2 cursor-pointer">
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 <Suspense fallback={"-"}>
-                  {fetchUser().then((data) => (data?.name ? data.name[0] : ""))}
+                  {fetchUser().then((data) => (data?.email ? data.email[0] : ""))}
                 </Suspense>
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2 w-56">
-            <DropdownMenuLabel className="flex flex-col"><h1>{fetchUser().then((data) => (data?.name ? data.name : ""))}</h1> <h2 className="font-light text-xs text-muted-foreground">{fetchUser().then((data) => (data?.email ? data.email : ""))}</h2></DropdownMenuLabel>
+            <DropdownMenuLabel className="flex flex-col">
+              <h1>
+                {fetchUser().then((data) => (data?.name ? data.name : ""))}
+              </h1>{" "}
+              <h2 className="text-xs font-light text-muted-foreground">
+                {fetchUser().then((data) => (data?.email ? data.email : ""))}
+              </h2>
+            </DropdownMenuLabel>
             <Separator />
             <DropdownMenuGroup>
               <DropdownMenuItem>

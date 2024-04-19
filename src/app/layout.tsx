@@ -1,12 +1,12 @@
-
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Provider from "./_trpc/Provider";
+import SideBar from "@/components/sidebar";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
-
-const inter = Inter({ subsets: ["latin"] });
+const inter = Poppins({weight: ["400", "500", "600", "700"], subsets: ["latin"]});
 
 export const metadata: Metadata = {
   title: "Reflekt",
@@ -20,12 +20,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+      </head>
       <body className={inter.className}>
-   
-      <Provider>
-        <Navbar />
-        {children}
-      </Provider>
+        <Provider>
+          <main className="w-screen h-screen fixed">
+            <Navbar />
+            <ResizablePanelGroup direction="horizontal">
+              <ResizablePanel maxSize={30} defaultSize={15}>
+                <SideBar />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel>{children}</ResizablePanel>
+            </ResizablePanelGroup>
+          </main>
+        </Provider>
       </body>
     </html>
   );

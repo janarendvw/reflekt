@@ -1,16 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { publicProcedure, router } from "./trpc";
-
 import { z } from "zod";
+import { reflectionRouter } from "./routers/reflections";
 
 const prisma = new PrismaClient();
 
 export const appRouter = router({
-  getReflection: publicProcedure.query(async () => {
-    const reflections = await prisma.reflection.findMany();
-    return reflections;
-  }),
-
+  reflection: reflectionRouter,
   createUser: publicProcedure
     .input(
       z.object({
@@ -19,16 +15,18 @@ export const appRouter = router({
         name: z.string().optional(),
       }),
     )
-    .mutation(async (input) => {
+    .mutation(async ({ input }) => {
+      const { email, password, name } = input;
       const user = await prisma.user.create({
         data: {
-          email: input.input.email,
-          password: input.input.password,
-          name: input.input.name,
+          email: email,
+          password: password,
+          name: name,
         },
       });
       return user;
     }),
+
 });
 
 export type AppRouter = typeof appRouter;

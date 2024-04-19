@@ -44,7 +44,7 @@ const LoginForm = (props: Props) => {
             </div>
             <div>
                 <Label htmlFor='login-password'>Password</Label>
-                <Input value={password} onChange={(e) => setPassword(e.target.value)} id='login-password' placeholder='Enter your password' />
+                <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} id='login-password' placeholder='Enter your password' />
             </div>
             </CardContent>
             <CardFooter className='flex justify-between'>
