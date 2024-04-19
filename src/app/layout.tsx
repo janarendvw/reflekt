@@ -31,7 +31,7 @@ export default function RootLayout({
                 <SideBar />
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel>{children}</ResizablePanel>
+              <ResizablePanel defaultSize={85}>{children}</ResizablePanel>
             </ResizablePanelGroup>
           </main>
         </Provider>

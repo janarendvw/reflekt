@@ -24,7 +24,7 @@ function SideBar({}: Props) {
             {links.map((link) => (
                 <Link
                     key={link.href}
-                    className={`rounded-lg px-3 py-2 tracking-wide duration-100 flex gap-2 items-center ${
+                    className={`rounded-lg px-3 py-2 text-sm tracking-wide duration-100 flex gap-2 items-center ${
                         pathname === link.href
                             ? "bg-secondary font-bold text-secondary-foreground"
                             : "bg-background text-foreground hover:bg-secondary"

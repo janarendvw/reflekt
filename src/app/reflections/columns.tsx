@@ -12,7 +12,7 @@ export const columns: ColumnDef<Reflection>[] = [
       const words = title.split(" ");
       const truncatedContent = words.slice(0, 5).join(" ");
       const displayContent = words.length > 5 ? `${truncatedContent}...` : truncatedContent;
-     return <Link className="font-semibold underline" href={`/reflections/${row.original.title}`}>{displayContent}</Link>
+     return <Link className="font-semibold underline" href={`/reflections/${row.original.id}`}>{displayContent}</Link>
     },
   },
   {
