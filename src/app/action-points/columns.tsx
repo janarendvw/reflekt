@@ -26,7 +26,7 @@ export const columns: ColumnDef<ActionPoint>[] = [
     header: "Status",
     accessorKey: "resolved",
     cell: ({ row }) => {
-      return row.original.resolved ? <Badge className="bg-green-400 flex items-center gap-1 w-fit"><Icon name="check_circle" />Resolved</Badge> : <Badge>Open</Badge>;
+      return row.original.resolved ? <Badge className="bg-green-400/10 text-green-500 flex items-center gap-1"><Icon name="check_circle" />Resolved</Badge> : <Badge className="flex border border-foreground border-dashed bg-transparent text-foreground items-center gap-1"><Icon name="work_history" />Open</Badge>;
     },
   },
   {

@@ -1,11 +1,19 @@
-import React from 'react'
+import Line from "@/components/charts/line";
+import React from "react";
+import { serverClient } from "../_trpc/serverClient";
+type Props = {};
 
-type Props = {}
+export default async function Page({}: Props) {
 
-function page({}: Props) {
+  const reflections = await serverClient.reflection.getAllReflections().then((res) => {
+    console.log(res);
+    return res;
+  });
+
+
   return (
-    <div>page</div>
-  )
+    <div>
+  <Line data={reflections} />
+    </div>
+  );
 }
-
-export default page

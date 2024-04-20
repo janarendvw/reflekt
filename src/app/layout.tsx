@@ -29,26 +29,33 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body className={inter.className}>
-        <Provider>
-          <main className="fixed h-screen w-screen">
-            <Navbar />
-            <ResizablePanelGroup direction="horizontal">
-              <ResizablePanel collapsible collapsedSize={10} maxSize={30} defaultSize={15}>
-                <SideBar />
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel
-                style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}
-                defaultSize={85}
-                className="relative py-20"
-              >
-                   <main className="container flex flex-col gap-8">
-                {children}
-                </main>
-              </ResizablePanel>
-            </ResizablePanelGroup>
-          </main>
-        </Provider>
+
+          <Provider>
+            <main className="fixed h-screen w-screen">
+              <Navbar />
+              <ResizablePanelGroup direction="horizontal">
+                <ResizablePanel
+                  collapsible
+                  collapsedSize={3}
+                  minSize={10}
+                  maxSize={30}
+                  defaultSize={15}
+                >
+                  <SideBar />
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel
+                  style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}
+                  defaultSize={85}
+                  className="relative py-20"
+                >
+                  <main className="container flex flex-col gap-8">
+                    {children}
+                  </main>
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </main>
+          </Provider>
       </body>
     </html>
   );

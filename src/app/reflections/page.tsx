@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import AddReflectionForm from "@/components/addReflectionForm";
+import Counter from "@/components/ui/counter";
 
 type Props = {};
 
@@ -29,7 +30,7 @@ export default async function page({}: Props) {
       <Card className="flex-1">
         <CardHeader className="pb-2">
           <CardDescription>Total reflections</CardDescription>
-          <CardTitle className="text-4xl">{reflectionCount}</CardTitle>
+          <CardTitle className="text-4xl"><Counter value={reflectionCount}/></CardTitle>
         </CardHeader>
         <CardContent>
         </CardContent>
@@ -37,7 +38,7 @@ export default async function page({}: Props) {
       <Card className="flex-1">
         <CardHeader className="pb-2">
           <CardDescription>Total action points</CardDescription>
-          <CardTitle className="text-4xl">{actionPointCount}</CardTitle>
+          <CardTitle className="text-4xl"><Counter value={actionPointCount} /></CardTitle>
         </CardHeader>
         <CardContent>
         </CardContent>
@@ -45,7 +46,7 @@ export default async function page({}: Props) {
       <Card className="flex-1">
         <CardHeader className="pb-2">
           <CardDescription>Percentage resolved</CardDescription>
-          <CardTitle className="text-4xl">{Math.round(resolvedActionPointCount/actionPointCount*100)}%</CardTitle>
+          <CardTitle className="text-4xl"><Counter value={Math.round(resolvedActionPointCount/actionPointCount*100)}/>%</CardTitle>
         </CardHeader>
         <CardContent>
         </CardContent>

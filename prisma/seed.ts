@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const generateActionPoints = () => {
   const actionPoints = [];
-  for(let i = 0; i < Math.floor(Math.random() * 3 + 1); i++) {
+  for(let i = 0; i < Math.floor(Math.random() * 4 + 1); i++) {
     actionPoints.push({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),

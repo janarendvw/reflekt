@@ -5,6 +5,11 @@ import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
+import { HoverCardContent } from "@radix-ui/react-hover-card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import React from "react";
 
 const generateHSLColorFromSeed = (seed: string) => {
   const seedCode = seed
@@ -23,12 +28,10 @@ export const columns: ColumnDef<Reflection>[] = [
       const utcDate = new Date(
         date.getUTCFullYear(),
         date.getUTCMonth(),
-        date.getUTCDate()
+        date.getUTCDate(),
       );
       return (
-        <span className="text-muted-foreground">
-          {utcDate.toDateString()}
-        </span>
+        <span className="text-muted-foreground">{utcDate.toDateString()}</span>
       );
     },
   },
@@ -73,11 +76,18 @@ export const columns: ColumnDef<Reflection>[] = [
         <div className="flex items-center gap-1">
           {skills.map((skill, index) => {
             return (
-              <motion.div key={index} initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.05 * index }}>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 * index }}
+              >
                 <Badge
-                  
-                  style={{ backgroundColor: `hsla(${generateHSLColorFromSeed(skill)}, 80%, 70%, 1)`, color: `hsla(${generateHSLColorFromSeed(skill)}, 100%, 10%, 1)`}}
-                  className="flex px-4 py-px font-bold items-center justify-center rounded-sm text-xs"
+                  style={{
+                    backgroundColor: `hsla(${generateHSLColorFromSeed(skill)}, 100%, 70%, 1)`,
+                    color: `hsla(${generateHSLColorFromSeed(skill)}, 100%, 10%, 1)`,
+                  }}
+                  className="flex items-center justify-center rounded-sm px-4 py-px text-xs font-bold"
                 >
                   {skill[0]}
                 </Badge>
@@ -94,9 +104,36 @@ export const columns: ColumnDef<Reflection>[] = [
     cell: ({ row }) => {
       const actionPoints: [] = row.getValue("actionPoints");
       return (
-        <Badge className="bg-secondary font-mono text-secondary-foreground">
-          {actionPoints.length} points
-        </Badge>
+        <HoverCard >
+          <HoverCardTrigger>
+            <Badge className="bg-secondary font-mono text-secondary-foreground">
+              {actionPoints.length} points
+            </Badge>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80">
+            <Card>
+              <CardHeader>
+                <CardTitle>Action Points</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-2">
+                  {actionPoints.map((actionPoint: any, index) => {
+                    return (
+                      <React.Fragment key={actionPoint.id}>
+                      {index !== 0 && <Separator />}
+                        <Link href={`/action-points/${actionPoint.id}`} className="list-item">
+                          <span className="font-muted-foreground underline">
+                            {actionPoint.title}
+                          </span>
+                        </Link>
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </HoverCardContent>
+        </HoverCard>
       );
     },
   },

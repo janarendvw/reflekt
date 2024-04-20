@@ -1,6 +1,7 @@
 import { prisma } from "@/app/client";
 import { publicProcedure, router } from "../trpc";
 import { z } from "zod";
+import { resolve } from "path";
 
 export const actionPointRouter = router({
     getAllActionPoints: publicProcedure
@@ -41,19 +42,21 @@ export const actionPointRouter = router({
         .input(
         z.object({
             id: z.number(),
-            title: z.string(),
-            content: z.string()
+            title: z.string().optional(),
+            content: z.string().optional(),
+            resolved: z.boolean().optional()
         })
         )
         .mutation(async ({ input }) => {
-        const { id, title, content } = input;
+        const { id, title, content, resolved } = input;
         return await prisma.actionPoint.update({
             where: {
             id: id
             },
             data: {
             title,
-            content
+            content,
+            resolved
             }
         });
         }),

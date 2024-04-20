@@ -16,7 +16,7 @@ export const reflectionRouter = router({
       })
     }),
 
-    getReflectionCount: publicProcedure
+  getReflectionCount: publicProcedure
     .query(async () => {
       return await prisma.reflection.count();
     }),
