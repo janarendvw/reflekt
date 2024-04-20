@@ -1,3 +1,4 @@
+
 import { PrismaClient, Skills } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
@@ -5,7 +6,7 @@ const prisma = new PrismaClient();
 
 const generateActionPoints = () => {
   const actionPoints = [];
-  for(let i = 0; i < Math.floor(Math.random() * 10); i++) {
+  for(let i = 0; i < Math.floor(Math.random() * 3 + 1); i++) {
     actionPoints.push({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),
@@ -17,11 +18,11 @@ const generateActionPoints = () => {
 
 const generateReflections = () => {
   const reflections = [];
-  for(let i = 0; i < Math.floor(Math.random() * 10); i++) {
+  for(let i = 0; i < Math.floor(Math.random() * 10 + 5); i++) {
     reflections.push({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraphs(),
-      skills: [Object.values(Skills)[Math.floor(Math.random() * Object.values(Skills).length)]],
+      skills: faker.helpers.arrayElements(Object.values(Skills), Math.floor(Math.random() * 3 + 1)),
       actionPoints: {
         create: generateActionPoints(),
       },
@@ -39,7 +40,6 @@ async function main() {
   await prisma.reflection.deleteMany();
   await prisma.user.deleteMany();
 
-  for (let i = 0; i < 20; i++) {
     const user = await prisma.user.create({
       data: {
         name: faker.person.fullName(),
@@ -51,7 +51,7 @@ async function main() {
       },
     });
     console.log(`Created user with id: ${user.id}`);
-  }
+  
 }
 
 main()

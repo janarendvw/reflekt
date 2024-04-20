@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/app/client";
 import { publicProcedure, router } from "./trpc";
 import { z } from "zod";
 import { reflectionRouter } from "./routers/reflections";
-
-const prisma = new PrismaClient();
+import { actionPointRouter } from "./routers/actionpoint";
 
 export const appRouter = router({
+  actionpoint: actionPointRouter,
   reflection: reflectionRouter,
   createUser: publicProcedure
     .input(
@@ -24,6 +24,12 @@ export const appRouter = router({
           name: name,
         },
       });
+      return user;
+    }),
+  
+  getFirstUser: publicProcedure
+    .query(async () => {
+      const user = await prisma.user.findFirst();
       return user;
     }),
 

@@ -1,4 +1,3 @@
-import { get } from "http";
 import { publicProcedure, router } from "../trpc";
 import { prisma } from "@/app/client";
 import { z } from "zod";
@@ -7,10 +6,38 @@ export const reflectionRouter = router({
   getAllReflections: publicProcedure
     .query(async () => {
       return await prisma.reflection.findMany({
+        include: {
+          actionPoints: true
+        },
         orderBy: {
           createdAt: 'desc'
         }
+
       })
+    }),
+
+    getReflectionCount: publicProcedure
+    .query(async () => {
+      return await prisma.reflection.count();
+    }),
+
+
+  getReflectionById: publicProcedure
+    .input(
+      z.object({
+        id: z.number()
+      })
+    )
+    .query(async ({ input }) => {
+      const { id } = input;
+      return await prisma.reflection.findUnique({
+        include: {
+          actionPoints: true
+        },
+        where: {
+          id: id
+        }
+      });
     }),
 
   getFirstNReflections: publicProcedure
@@ -23,11 +50,15 @@ export const reflectionRouter = router({
       const { n } = input;
       return await prisma.reflection.findMany({
         take: n,
+        include: {
+          actionPoints: true
+        },
         orderBy: {
           createdAt: 'desc'
         }
       });
     }),
+    
   createReflection: publicProcedure
     .input(
       z.object({
@@ -43,7 +74,7 @@ export const reflectionRouter = router({
           content: content,
           author: {
             connect: {
-              id: '1'
+              id: 'clv78ip0f00003ohr94vxp0ns'
             }
           }
         }
@@ -74,7 +105,7 @@ export const reflectionRouter = router({
   deleteReflection: publicProcedure
     .input(
       z.object({
-        id: z.string()
+        id: z.number()
       })
     )
     .mutation(async ({ input }) => {

@@ -14,7 +14,7 @@ services:
       - db
     networks:
       - default
-    command: sh -c "pnpm prisma db seed && pnpx prisma studio & pnpm dev"
+    command: sh -c "pnpx prisma studio & pnpm dev"
   db:
     image: postgres:latest
     restart: always

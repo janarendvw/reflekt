@@ -10,38 +10,40 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { prisma } from "@/app/client";
+import Image from "next/image";
+import { serverClient } from "@/app/_trpc/serverClient";
+import NavbarBreadcrumb from "./ui/navbar-breadcrumb";
 
 type Props = {};
 
-async function fetchUser() {
-  const response = prisma.user.findFirst();
-  return response;
-}
+async function Navbar({}: Props) {
+  const user = await serverClient.getFirstUser().then((res) => res);
 
-function Navbar({}: Props) {
   return (
     <>
-      <nav className="flex w-full items-center justify-between px-2 py-2">
-        <h1 className="ml-2 text-xl font-bold">REFLEKT</h1>
+      <nav className="flex w-full items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-1">
+          <Image src="/Reflekt.svg" alt="Reflekt Logo" width={24} height={24} />
+          <h1 className="text-xl font-bold">REFLEKT</h1>
+        </div>
+
+        <NavbarBreadcrumb />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="mr-2 cursor-pointer">
               <AvatarFallback className="bg-primary text-primary-foreground">
                 <Suspense fallback={"-"}>
-                  {fetchUser().then((data) => (data?.email ? data.email[0] : ""))}
+                  {user?.email ? user.email[0] : ""}
                 </Suspense>
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2 w-56">
             <DropdownMenuLabel className="flex flex-col">
-              <h1>
-                {fetchUser().then((data) => (data?.name ? data.name : ""))}
-              </h1>{" "}
+              <h1>{user?.name ? user.name : ""}</h1>{" "}
               <h2 className="text-xs font-light text-muted-foreground">
-                {fetchUser().then((data) => (data?.email ? data.email : ""))}
+                {user?.email ? user.email : ""}
               </h2>
             </DropdownMenuLabel>
             <Separator />

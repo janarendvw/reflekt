@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { motion } from "framer-motion"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -32,8 +33,8 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="rounded-xl border">
-      <Table >
+    <motion.div className="border rounded-lg bg-card">
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -59,9 +60,9 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                {row.getVisibleCells().map((cell, index) => (
+                  <TableCell key={cell.id} >
+                    <motion.div  initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.05 * index}}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</motion.div>
                   </TableCell>
                 ))}
               </TableRow>
@@ -75,6 +76,6 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-    </div>
+    </motion.div>
   )
 }
