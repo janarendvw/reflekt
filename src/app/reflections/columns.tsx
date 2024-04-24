@@ -2,7 +2,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import type { Reflection } from "@prisma/client";
 import Link from "next/link";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -10,14 +9,7 @@ import { HoverCardContent } from "@radix-ui/react-hover-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import React from "react";
-
-const generateHSLColorFromSeed = (seed: string) => {
-  const seedCode = seed
-    .split("")
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const hue = seedCode % 360;
-  return hue;
-};
+import { resolveSkillEnum } from "@/lib/helpers";
 
 export const columns: ColumnDef<Reflection>[] = [
   {
@@ -74,26 +66,18 @@ export const columns: ColumnDef<Reflection>[] = [
 
       return (
         <div className="flex items-center gap-1">
-          {skills.map((skill, index) => {
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * index }}
-              >
-                <Badge
-                  style={{
-                    backgroundColor: `hsla(${generateHSLColorFromSeed(skill)}, 100%, 70%, 1)`,
-                    color: `hsla(${generateHSLColorFromSeed(skill)}, 100%, 10%, 1)`,
-                  }}
-                  className="flex items-center justify-center rounded-sm px-4 py-px text-xs font-bold"
-                >
-                  {skill[0]}
-                </Badge>
-              </motion.div>
-            );
-          })}
+          {skills && skills.length > 0 ? (
+            <span className="flex items-center gap-2">
+              <Badge variant={"default"}>{resolveSkillEnum(skills[0])}</Badge>
+              {skills.length > 1 && (
+                <span className="text-xs font-semibold">
+                  +{skills.length - 1}
+                </span>
+              )}
+            </span>
+          ) : (
+            <span className="text-xs text-muted-foreground">-</span>
+          )}
         </div>
       );
     },
@@ -104,36 +88,48 @@ export const columns: ColumnDef<Reflection>[] = [
     cell: ({ row }) => {
       const actionPoints: [] = row.getValue("actionPoints");
       return (
-        <HoverCard >
-          <HoverCardTrigger>
-            <Badge className="bg-secondary font-mono text-secondary-foreground">
-              {actionPoints.length} points
-            </Badge>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80">
-            <Card>
-              <CardHeader>
-                <CardTitle>Action Points</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-2">
-                  {actionPoints.map((actionPoint: any, index) => {
-                    return (
-                      <React.Fragment key={actionPoint.id}>
-                      {index !== 0 && <Separator />}
-                        <Link href={`/action-points/${actionPoint.id}`} className="list-item">
-                          <span className="font-muted-foreground underline">
-                            {actionPoint.title}
-                          </span>
-                        </Link>
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </HoverCardContent>
-        </HoverCard>
+        <>
+          {actionPoints.length > 0 ? (
+            <HoverCard>
+              <HoverCardTrigger>
+                <Badge variant={"outline"} className="font-mono">
+                  {actionPoints.length} points
+                </Badge>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <motion.div
+                  initial={{ scale: 0.7, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ y: "-30%", opacity: 0 }}
+                >
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Action Points</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-col gap-2">
+                        {actionPoints.map((actionPoint: any, index) => {
+                          return (
+                            <React.Fragment key={actionPoint.id}>
+                              {index !== 0 && <Separator />}
+                              <Link href={`/action-points/${actionPoint.id}`}>
+                                <span className="font-muted-foreground underline">
+                                  {actionPoint.title}
+                                </span>
+                              </Link>
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </HoverCardContent>
+            </HoverCard>
+          ) : (
+            <span className="text-muted-foreground">-</span>
+          )}
+        </>
       );
     },
   },

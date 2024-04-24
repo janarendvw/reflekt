@@ -18,18 +18,19 @@ function NavbarBreadcrumb({}: Props) {
     .split("/")
     .filter((path) => path !== "");
   return (
-    <LayoutGroup >
       <Breadcrumb>
         <BreadcrumbList>
           {pathArray.map((path, index) => {
             return (
               <React.Fragment key={index}>
-                <BreadcrumbItem>
-                  <motion.div
-                    initial={{ opacity: 0, x: "-300%" }}
+                 <motion.div
+                  layoutId={path}
+                    initial={{ opacity: 0, x: "-100%" }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, y: "-100%" }}
                   >
+                <BreadcrumbItem>
+                 
                     {index !== pathArray.length - 1 ? (
                       <BreadcrumbLink
                         href={`/${path}`}
@@ -42,16 +43,15 @@ function NavbarBreadcrumb({}: Props) {
                         {path}
                       </BreadcrumbPage>
                     )}
-                  </motion.div>
+       
                 </BreadcrumbItem>
-
+                </motion.div>
                 {index !== pathArray.length - 1 && <BreadcrumbSeparator />}
               </React.Fragment>
             );
           })}
         </BreadcrumbList>
       </Breadcrumb>
-    </LayoutGroup>
   );
 }
 

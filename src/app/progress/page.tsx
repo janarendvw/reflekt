@@ -13,7 +13,6 @@ export default async function Page({}: Props) {
 
   return (
     <div>
-  <Line data={reflections} />
     </div>
   );
 }

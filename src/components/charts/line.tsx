@@ -11,7 +11,7 @@ function Line({data}: Props) {
     console.log(data)
     
   return (
-    <ResponsiveLine data={data} />  )
+    <div>jemoeder</div> )
 }
 
 export default Line

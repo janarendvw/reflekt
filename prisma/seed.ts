@@ -23,6 +23,7 @@ const generateReflections = () => {
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraphs(),
       skills: faker.helpers.arrayElements(Object.values(Skills), Math.floor(Math.random() * 3 + 1)),
+      createdAt: faker.date.recent({days: 20}),
       actionPoints: {
         create: generateActionPoints(),
       },
@@ -42,8 +43,9 @@ async function main() {
 
     const user = await prisma.user.create({
       data: {
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
+        id: 'test-user-id',
+        name: 'Test User',
+        email: 'testuser@example.com',
         password: faker.internet.password(),
         reflections: {
           create: generateReflections(), // Pass the user's id as the authorId

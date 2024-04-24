@@ -34,15 +34,8 @@ export default function RootLayout({
             <main className="fixed h-screen w-screen">
               <Navbar />
               <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel
-                  collapsible
-                  collapsedSize={3}
-                  minSize={10}
-                  maxSize={30}
-                  defaultSize={15}
-                >
+             
                   <SideBar />
-                </ResizablePanel>
                 <ResizableHandle withHandle />
                 <ResizablePanel
                   style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}

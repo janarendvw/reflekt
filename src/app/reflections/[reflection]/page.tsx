@@ -25,7 +25,7 @@ export default async function Page({
   const reflection = await serverClient.reflection
     .getReflectionById({ id: Number(params.reflection) })
     .then((res) => res);
- 
+
   return (
     <>
       <Link
@@ -35,7 +35,9 @@ export default async function Page({
         <Icon name="arrow_back" />
         Terug
       </Link>
-      <Card className="">
+      <h3 className="text-lg font-semibold">Reflection</h3>
+
+      <Card className="mb-12">
         <CardHeader className="flex justify-between">
           <div className="flex flex-col gap-1">
             <CardTitle>{reflection?.title}</CardTitle>
@@ -46,19 +48,51 @@ export default async function Page({
         </CardHeader>
         <CardContent>{reflection?.content}</CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Action Points</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-3 gap-8">
-          {//sort reflections by resolved
-          reflection?.actionPoints
-            .sort((a) => (a.resolved ? 1 : -1))
-            .map((actionPoint: ActionPoint) => (
-          <ActionPointCard key={actionPoint.id} actionPoint={actionPoint} />
-            ))}
-        </CardContent>
-      </Card>
+
+      <h3 className="text-lg font-semibold">Open Action Points</h3>
+      {reflection?.actionPoints.filter((actionPoint: ActionPoint) => {
+        return !actionPoint.resolved;
+      }).length === 0 ? (
+        <p className="italic text-muted-foreground">No open action points</p>
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {reflection?.actionPoints
+            .filter((actionPoint: ActionPoint) => {
+              return !actionPoint.resolved;
+            })
+            .map((actionPoint: ActionPoint) => {
+              return (
+                <ActionPointCard
+                  actionPoint={actionPoint}
+                  key={actionPoint.id}
+                />
+              );
+            })}
+        </div>
+      )}
+      <h3 className="text-lg font-semibold">Resolved Action Points</h3>
+      {reflection?.actionPoints.filter((actionPoint: ActionPoint) => {
+        return actionPoint.resolved;
+      }).length === 0 ? (
+        <p className="italic text-muted-foreground">
+          No resolved action points
+        </p>
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {reflection?.actionPoints
+            .filter((actionPoint: ActionPoint) => {
+              return actionPoint.resolved;
+            })
+            .map((actionPoint: ActionPoint) => {
+              return (
+                <ActionPointCard
+                  actionPoint={actionPoint}
+                  key={actionPoint.id}
+                />
+              );
+            })}
+        </div>
+      )}
     </>
   );
 }

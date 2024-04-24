@@ -1,4 +1,5 @@
 import { serverClient } from "@/app/_trpc/serverClient";
+import ActionPointCard from "@/components/actionpoint-card";
 import {
   Card,
   CardContent,
@@ -28,17 +29,7 @@ export default async function Page({
         <Icon name="arrow_back" />
         Terug
       </Link>
-      <Card>
-        <CardHeader className="flex justify-between">
-          <div className="flex flex-col gap-1">
-            <CardTitle>{actionPoint?.title}</CardTitle>
-            <CardDescription>
-              {actionPoint?.createdAt.toDateString()}
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>{actionPoint?.content}</CardContent>
-      </Card>
+      {actionPoint && <ActionPointCard actionPoint={actionPoint} />}
     </>
   );
 }

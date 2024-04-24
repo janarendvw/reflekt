@@ -30,7 +30,7 @@ export default async function page({}: Props) {
       <Card className="flex-1">
         <CardHeader className="pb-2">
           <CardDescription>Total reflections</CardDescription>
-          <CardTitle className="text-4xl"><Counter value={reflectionCount}/></CardTitle>
+          <CardTitle className="text-4xl">{reflectionCount}</CardTitle>
         </CardHeader>
         <CardContent>
         </CardContent>
@@ -38,7 +38,7 @@ export default async function page({}: Props) {
       <Card className="flex-1">
         <CardHeader className="pb-2">
           <CardDescription>Total action points</CardDescription>
-          <CardTitle className="text-4xl"><Counter value={actionPointCount} /></CardTitle>
+          <CardTitle className="text-4xl">{actionPointCount}</CardTitle>
         </CardHeader>
         <CardContent>
         </CardContent>
@@ -46,7 +46,7 @@ export default async function page({}: Props) {
       <Card className="flex-1">
         <CardHeader className="pb-2">
           <CardDescription>Percentage resolved</CardDescription>
-          <CardTitle className="text-4xl"><Counter value={Math.round(resolvedActionPointCount/actionPointCount*100)}/>%</CardTitle>
+          <CardTitle className="text-4xl">{Math.round(resolvedActionPointCount/actionPointCount*100)}%</CardTitle>
         </CardHeader>
         <CardContent>
         </CardContent>
@@ -54,7 +54,7 @@ export default async function page({}: Props) {
     </div>
 
       <DataTable columns={columns} data={data} /> 
-      <AddReflectionForm />
+      
     </>
   );
 }
