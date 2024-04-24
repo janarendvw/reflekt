@@ -1,4 +1,4 @@
-import AddReflectionForm from '@/components/addReflectionForm'
+import AddReflectionForm from '@/components/new-reflection/addReflectionForm'
 import React from 'react'
 
 type Props = {}

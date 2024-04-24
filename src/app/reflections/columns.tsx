@@ -17,13 +17,10 @@ export const columns: ColumnDef<Reflection>[] = [
     accessorKey: "createdAt",
     cell: ({ row }) => {
       const date = new Date(row.original.createdAt);
-      const utcDate = new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-      );
       return (
-        <span className="text-muted-foreground">{utcDate.toDateString()}</span>
+        <span className="font-mono text-muted-foreground">
+          {date.toUTCString().split(" ").slice(0, 4).join(" ")}
+        </span>
       );
     },
   },

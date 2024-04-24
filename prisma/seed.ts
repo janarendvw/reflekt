@@ -11,6 +11,7 @@ const generateActionPoints = () => {
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),
       resolved: Math.random() > 0.5,
+      createdAt: faker.date.recent({days: 20}),
     });
   }
   return actionPoints;

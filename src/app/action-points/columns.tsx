@@ -6,6 +6,12 @@ import { ActionPoint } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { trpc } from "../_trpc/client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const columns: ColumnDef<ActionPoint>[] = [
   {
@@ -13,13 +19,11 @@ export const columns: ColumnDef<ActionPoint>[] = [
     accessorKey: "createdAt",
     cell: ({ row }) => {
       const date = new Date(row.original.createdAt);
-      const utcDate = new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-      );
+
       return (
-        <span className="text-muted-foreground">{utcDate.toDateString()}</span>
+        <span className="font-mono text-muted-foreground">
+          {date.toUTCString().split(" ").slice(0, 4).join(" ")}
+        </span>
       );
     },
   },
@@ -55,31 +59,6 @@ export const columns: ColumnDef<ActionPoint>[] = [
     },
   },
   {
-    header: "Actions",
-    accessorKey: "id",
-    cell: ({ row }) => {
-      const mutation = trpc.actionpoint.updateActionPoint.useMutation();
-      return (
-        <Button
-          disabled={mutation.isPending}
-          variant="link"
-          onClick={() => {
-            mutation.mutate({
-              id: row.original.id,
-              resolved: !row.original.resolved,
-            });
-          }}
-        >
-          {row.original.resolved ? (
-            <span>{mutation.isSuccess ? "Unresolved" : "Unresolve"}</span>
-          ) : (
-            <span>{mutation.isSuccess ? "Resolved" : "Resolve"}</span>
-          )}
-        </Button>
-      );
-    },
-  },
-  {
     header: "Reflection",
     accessorKey: "reflectionId",
     cell: ({ row }) => {
@@ -90,6 +69,48 @@ export const columns: ColumnDef<ActionPoint>[] = [
         >
           Reflection
         </Link>
+      );
+    },
+  },
+  {
+    id: "id",
+    cell: ({ row }) => {
+      const mutation = trpc.actionpoint.updateActionPoint.useMutation();
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Icon name="more_vert" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <button
+                disabled={mutation.isPending}
+                onClick={() => {
+                  mutation.mutate({
+                    id: row.original.id,
+                    resolved: !row.original.resolved,
+                  });
+                }}
+              >
+                {row.original.resolved ? "unresolve" : "resolve"}
+              </button>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <button
+                className="text-red-500"
+                disabled={mutation.isPending}
+                onClick={() => {
+                  mutation.mutate({
+                    id: row.original.id,
+                    resolved: !row.original.resolved,
+                  });
+                }}
+              >
+                delete
+              </button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
