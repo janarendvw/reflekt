@@ -24,6 +24,12 @@ enum Skills {
   REFLECTING
 }
 
+enum ReflectionModelType {
+  STARR
+  KORTHAGEN
+  DEFAULT
+}
+
 model User {
   id          String       @id @unique @default(cuid())
   email       String       @unique
@@ -35,13 +41,14 @@ model User {
 model Reflection {
   id           Int           @id @unique @default(autoincrement())
   title        String
-  content      String
+  content      String[]
   author       User          @relation(fields: [authorId], references: [id])
   authorId     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   skills       Skills[]
   actionPoints ActionPoint[]
+  reflectionType ReflectionModelType
 }
 
 model ActionPoint {

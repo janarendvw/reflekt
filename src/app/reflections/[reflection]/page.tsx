@@ -46,7 +46,9 @@ export default async function Page({
             </CardDescription>
           </div>
         </CardHeader>
-        <CardContent>{reflection?.content}</CardContent>
+        <CardContent className="flex flex-col gap-2">{reflection?.content.map((paragraph) => {
+          return <p key={paragraph}>{paragraph}</p>;
+        })}</CardContent>
       </Card>
 
       <h3 className="text-lg font-semibold">Open Action Points</h3>

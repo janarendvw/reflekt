@@ -1,6 +1,6 @@
 import { publicProcedure, router } from "../trpc";
 import { prisma } from "@/app/client";
-import { Skills } from "@prisma/client";
+import { ReflectionModelType, Skills } from "@prisma/client";
 import { z } from "zod";
 
 export const reflectionRouter = router({
@@ -64,17 +64,19 @@ export const reflectionRouter = router({
     .input(
       z.object({
         title: z.string(),
-        content: z.string(),
-        skills: z.array(z.nativeEnum(Skills)).optional()
+        content: z.array(z.string()),
+        skills: z.array(z.nativeEnum(Skills)).optional(),
+        reflectionType: z.nativeEnum(ReflectionModelType)
       })
     )
     .mutation(async ({ input }) => {
-      const { title, content, skills } = input;
+      const { title, content, skills, reflectionType } = input;
       const reflection = await prisma.reflection.create({
         data: {
           title: title,
           content: content,
           skills: skills,
+          reflectionType: reflectionType ,
           author: {
             connect: {
               id: 'test-user-id'
@@ -89,7 +91,7 @@ export const reflectionRouter = router({
       z.object({
         id: z.number(),
         title: z.string(),
-        content: z.string()
+        content: z.array(z.string())
       })
     )
     .mutation(async ({ input }) => {

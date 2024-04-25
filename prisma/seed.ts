@@ -1,5 +1,5 @@
 
-import { PrismaClient, Skills } from "@prisma/client";
+import { PrismaClient, ReflectionModelType, Skills } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
@@ -22,12 +22,14 @@ const generateReflections = () => {
   for(let i = 0; i < Math.floor(Math.random() * 10 + 5); i++) {
     reflections.push({
       title: faker.lorem.sentence(),
-      content: faker.lorem.paragraphs(),
+      content: [faker.lorem.paragraph()],
       skills: faker.helpers.arrayElements(Object.values(Skills), Math.floor(Math.random() * 3 + 1)),
+      reflectionType: faker.helpers.arrayElement([ReflectionModelType.STARR]),
       createdAt: faker.date.recent({days: 20}),
       actionPoints: {
         create: generateActionPoints(),
       },
+
     });
   }
   return reflections;
