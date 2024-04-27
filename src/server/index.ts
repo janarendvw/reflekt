@@ -1,7 +1,7 @@
 import { prisma } from "@/app/client";
 import { publicProcedure, router } from "./trpc";
 import { z } from "zod";
-import { reflectionRouter } from "./routers/reflections";
+import { reflectionRouter } from "./routers/reflection";
 import { actionPointRouter } from "./routers/actionpoint";
 
 export const appRouter = router({

@@ -31,23 +31,7 @@ export default function RootLayout({
       <body className={inter.className}>
 
           <Provider>
-            <main className="fixed h-screen w-screen">
-              <Navbar />
-              <ResizablePanelGroup direction="horizontal">
-             
-                  <SideBar />
-                <ResizableHandle withHandle />
-                <ResizablePanel
-                  style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}
-                  defaultSize={85}
-                  className="relative py-20"
-                >
-                  <main className="container flex flex-col gap-8">
-                    {children}
-                  </main>
-                </ResizablePanel>
-              </ResizablePanelGroup>
-            </main>
+           {children}
           </Provider>
       </body>
     </html>

@@ -1,7 +1,7 @@
 import Line from "@/components/charts/line";
 import React from "react";
-import { serverClient } from "../_trpc/serverClient";
 import { ActionPoint } from "@prisma/client";
+import { serverClient } from "@/app/_trpc/serverClient";
 
 type Props = {};
 

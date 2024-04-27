@@ -1,7 +1,8 @@
 import { DataTable } from '@/components/ui/data-table'
 import React from 'react'
 import { columns } from './columns'
-import { serverClient } from '../_trpc/serverClient'
+import { serverClient } from '@/app/_trpc/serverClient'
+
 
 type Props = {}
 

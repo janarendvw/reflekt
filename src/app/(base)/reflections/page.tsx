@@ -1,7 +1,5 @@
 import React from "react";
-import { DataTable } from "../../components/ui/data-table";
 import { columns } from "./columns";
-import { serverClient } from "../_trpc/serverClient";
 import {
   Card,
   CardContent,
@@ -9,6 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { serverClient } from "@/app/_trpc/serverClient";
+import { DataTable } from "@/components/ui/data-table";
 
 type Props = {};
 

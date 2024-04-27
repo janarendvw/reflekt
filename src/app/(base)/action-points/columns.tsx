@@ -5,13 +5,14 @@ import Icon from "@/components/ui/icon";
 import { ActionPoint } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import { trpc } from "../_trpc/client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { trpc } from "@/app/_trpc/client";
 
 export const columns: ColumnDef<ActionPoint>[] = [
   {
@@ -64,7 +65,7 @@ export const columns: ColumnDef<ActionPoint>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          href={`/reflections/${row.original.reflectionId}`}
+          href={`./reflections/${row.original.reflectionId}`}
           className="underline"
         >
           Reflection

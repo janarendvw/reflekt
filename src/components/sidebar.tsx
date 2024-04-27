@@ -38,7 +38,7 @@ function SideBar({}: Props) {
   >
       <div className="flex flex-col items-center gap-px">
         <Link
-          href="/reflections/new-reflection"
+          href="./reflections/new-reflection"
           className={`flex items-center gap-2 py-4 font-medium tracking-wide bg-orange-500 text-background w-full ${isCollapsed ? 'justify-center text-2xl' : 'justify-between text-sm'}`}
         >
          <span className={`flex gap-4 items-center justify-between mx-auto`}><Icon name="edit" /> {!isCollapsed && 'new reflection'}  </span>
