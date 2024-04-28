@@ -1,10 +1,10 @@
-import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
-export async function createContext(opts: CreateNextContextOptions) {
-   
+export const createContext = async (opts: FetchCreateContextFnOptions) => {
+    const { req, resHeaders } = opts;
     return {
-        undefined,
-    };
-  }
+        req, resHeaders
+    }
+}
 
   export type Context = Awaited<ReturnType<typeof createContext>>;
