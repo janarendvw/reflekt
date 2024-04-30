@@ -29,16 +29,13 @@ export const columns: ColumnDef<Reflection>[] = [
     accessorKey: "title",
     cell: ({ row }) => {
       const title = row.original.title;
-      const words = title.split(" ");
-      const truncatedContent = words.slice(0, 5).join(" ");
-      const displayContent =
-        words.length > 5 ? `${truncatedContent}...` : truncatedContent;
+
       return (
         <Link
-          className="font-semibold hover:underline"
+          className="font-semibold hover:underline line-clamp-1"
           href={`/reflections/${row.original.id}`}
         >
-          {displayContent}
+          {title}
         </Link>
       );
     },
@@ -86,7 +83,7 @@ export const columns: ColumnDef<Reflection>[] = [
       const actionPoints: [] = row.getValue("actionPoints");
       return (
         <>
-          {actionPoints.length > 0 ? (
+          {actionPoints && actionPoints.length > 0 ? (
             <HoverCard>
               <HoverCardTrigger>
                 <Badge variant={"outline"} className="font-mono">

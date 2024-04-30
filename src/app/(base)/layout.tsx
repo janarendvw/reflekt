@@ -7,7 +7,8 @@ type Props = {
     children: React.ReactNode
 }
 
-function layout({children}: Props) {
+async function layout({children}: Props) {
+  
   return (
     <main className="fixed h-screen w-screen">
     <Navbar />

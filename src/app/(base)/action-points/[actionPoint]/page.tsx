@@ -1,13 +1,7 @@
-import { serverClient } from "@/app/_trpc/serverClient";
 import ActionPointCard from "@/components/actionpoint-card";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import { createCaller } from "@/server";
+import { createContext } from "@/server/context";
 import Link from "next/link";
 import React from "react";
 
@@ -16,6 +10,9 @@ export default async function Page({
 }: {
   params: { actionPoint: number };
 }) {
+  const ctx = await createContext();
+  const serverClient = createCaller(ctx);
+
   const actionPoint = await serverClient.actionpoint
     .getActionPointById({ id: Number(params.actionPoint) })
     .then((res) => res);

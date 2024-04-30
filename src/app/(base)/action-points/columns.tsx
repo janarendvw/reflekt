@@ -1,6 +1,5 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 import { ActionPoint } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -35,7 +34,7 @@ export const columns: ColumnDef<ActionPoint>[] = [
       return (
         <Link
           href={`/action-points/${row.original.id}`}
-          className="font-semibold hover:underline"
+          className="font-semibold hover:underline line-clamp-1"
         >
           {row.original.title}
         </Link>

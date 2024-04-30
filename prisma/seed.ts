@@ -1,15 +1,17 @@
 
 import { PrismaClient, ReflectionModelType, Skills } from "@prisma/client";
 import { faker } from "@faker-js/faker";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const generateActionPoints = () => {
+const generateActionPoints = (id: string) => {
   const actionPoints = [];
   for(let i = 0; i < Math.floor(Math.random() * 4 + 1); i++) {
     actionPoints.push({
       title: faker.lorem.sentence(),
       content: faker.lorem.paragraph(),
+      authorId: id,
       resolved: Math.random() > 0.5,
       createdAt: faker.date.recent({days: 20}),
     });
@@ -17,7 +19,7 @@ const generateActionPoints = () => {
   return actionPoints;
 }
 
-const generateReflections = () => {
+const generateReflections = (id: string) => {
   const reflections = [];
   for(let i = 0; i < Math.floor(Math.random() * 10 + 5); i++) {
     reflections.push({
@@ -27,7 +29,7 @@ const generateReflections = () => {
       reflectionType: faker.helpers.arrayElement([ReflectionModelType.STARR]),
       createdAt: faker.date.recent({days: 20}),
       actionPoints: {
-        create: generateActionPoints(),
+        create: generateActionPoints(id),
       },
 
     });
@@ -44,18 +46,28 @@ async function main() {
   await prisma.reflection.deleteMany();
   await prisma.user.deleteMany();
 
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
-        id: 'test-user-id',
-        name: 'Test User',
-        email: 'testuser@example.com',
-        password: faker.internet.password(),
+        id: '0001',
+        name: 'frank',
+        email: 'frank@reflekt.com',
+        password: await bcrypt.hash('test', 12),
         reflections: {
-          create: generateReflections(), // Pass the user's id as the authorId
+          create: generateReflections('0001'), // Pass the user's id as the authorId
         },
       },
     });
-    console.log(`Created user with id: ${user.id}`);
+    await prisma.user.create({
+      data: {
+        id: '0002',
+        name: 'gerard',
+        email: 'gerard@reflekt.com',
+        password: await bcrypt.hash('test', 12),
+        reflections: {
+          create: generateReflections('0002'), // Pass the user's id as the authorId
+        },
+      },
+    });
   
 }
 

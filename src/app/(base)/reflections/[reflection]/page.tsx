@@ -1,4 +1,3 @@
-import { serverClient } from "@/app/_trpc/serverClient";
 import ActionPointCard from "@/components/actionpoint-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import { createCaller } from "@/server";
+import { createContext } from "@/server/context";
 import { ActionPoint } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
@@ -22,6 +23,10 @@ export default async function Page({
 }: {
   params: { reflection: number };
 }) {
+
+  const ctx = await createContext();
+  const serverClient = createCaller(ctx);
+
   const reflection = await serverClient.reflection
     .getReflectionById({ id: Number(params.reflection) })
     .then((res) => res);

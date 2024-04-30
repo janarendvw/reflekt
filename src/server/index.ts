@@ -1,38 +1,25 @@
 import { prisma } from "@/app/client";
-import { publicProcedure, router } from "./trpc";
+import { privateProcedure, publicProcedure, router, t } from "./trpc";
 import { z } from "zod";
 import { reflectionRouter } from "./routers/reflection";
 import { actionPointRouter } from "./routers/actionpoint";
+import { getMeHandler } from "./controllers/user";
+import authRouter from "./routers/auth";
+import { createContext } from "./context";
+
 
 export const appRouter = router({
   actionpoint: actionPointRouter,
   reflection: reflectionRouter,
-  createUser: publicProcedure
-    .input(
-      z.object({
-        email: z.string(),
-        password: z.string(),
-        name: z.string().optional(),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      const { email, password, name } = input;
-      const user = await prisma.user.create({
-        data: {
-          email: email,
-          password: password,
-          name: name,
-        },
-      });
-      return user;
-    }),
-  
-  getFirstUser: publicProcedure
-    .query(async () => {
-      const user = await prisma.user.findFirst();
-      return user;
-    }),
+  auth: authRouter,
 
+  getFirstUser: publicProcedure.query(async () => {
+    const user = await prisma.user.findFirst();
+    return user;
+  }),
+  getMe: privateProcedure.query(({ ctx }) => getMeHandler({ ctx })),
 });
+
+export const createCaller = t.createCallerFactory(appRouter);
 
 export type AppRouter = typeof appRouter;

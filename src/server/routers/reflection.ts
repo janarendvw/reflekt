@@ -1,88 +1,89 @@
-import { publicProcedure, router } from "../trpc";
+import { privateProcedure, publicProcedure, router, unCachedPrivateProcedure } from "../trpc";
 import { prisma } from "@/app/client";
 import { ReflectionModelType, Skills } from "@prisma/client";
 import { z } from "zod";
 
 export const reflectionRouter = router({
-  getAllReflections: publicProcedure
-    .query(async () => {
-      return await prisma.reflection.findMany({
-        include: {
-          actionPoints: true
-        },
-        orderBy: {
-          createdAt: 'desc'
-        }
+  getAll: unCachedPrivateProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user?.id;
+    return await prisma.reflection.findMany({
+      include: {
+        actionPoints: true,
+      },
+      where: {
+        authorId: userId,
+      },
+    });
+  }),
 
-      })
-    }),
-
-  getReflectionCount: publicProcedure
-    .query(async () => {
-      return await prisma.reflection.count();
-    }),
-
+  getCount: privateProcedure.query(async ({ ctx }) => {
+    return await prisma.reflection.count({
+      where: {
+        authorId: ctx.user?.id,
+      },
+    });
+  }),
 
   getReflectionById: publicProcedure
     .input(
       z.object({
-        id: z.number()
-      })
+        id: z.number(),
+      }),
     )
     .query(async ({ input }) => {
       const { id } = input;
       return await prisma.reflection.findUnique({
         include: {
-          actionPoints: true
+          actionPoints: true,
         },
         where: {
-          id: id
-        }
+          id: id,
+        },
       });
     }),
 
   getFirstNReflections: publicProcedure
     .input(
       z.object({
-        n: z.number()
-      })
+        n: z.number(),
+      }),
     )
     .query(async ({ input }) => {
       const { n } = input;
       return await prisma.reflection.findMany({
         take: n,
         include: {
-          actionPoints: true
+          actionPoints: true,
         },
         orderBy: {
-          createdAt: 'desc'
-        }
+          createdAt: "desc",
+        },
       });
     }),
-    
-  createReflection: publicProcedure
+
+  create: publicProcedure
     .input(
       z.object({
         title: z.string(),
         content: z.array(z.string()),
         skills: z.array(z.nativeEnum(Skills)).optional(),
-        reflectionType: z.nativeEnum(ReflectionModelType)
-      })
+        reflectionType: z.nativeEnum(ReflectionModelType),
+      }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { title, content, skills, reflectionType } = input;
       const reflection = await prisma.reflection.create({
         data: {
           title: title,
           content: content,
           skills: skills,
-          reflectionType: reflectionType ,
+          reflectionType: reflectionType,
           author: {
             connect: {
-              id: 'test-user-id'
-            }
-          }
-        }
+              id: ctx.user?.id,
+            },
+          },
+        },
       });
       return reflection;
     }),
@@ -91,35 +92,35 @@ export const reflectionRouter = router({
       z.object({
         id: z.number(),
         title: z.string(),
-        content: z.array(z.string())
-      })
+        content: z.array(z.string()),
+      }),
     )
     .mutation(async ({ input }) => {
       const { id, title, content } = input;
       const reflection = await prisma.reflection.update({
         where: {
-          id: id
+          id: id,
         },
         data: {
           title: title,
-          content: content
-        }
+          content: content,
+        },
       });
       return reflection;
     }),
   deleteReflection: publicProcedure
     .input(
       z.object({
-        id: z.number()
-      })
+        id: z.number(),
+      }),
     )
     .mutation(async ({ input }) => {
       const { id } = input;
       const reflection = await prisma.reflection.delete({
         where: {
-          id: id
-        }
+          id: id,
+        },
       });
       return reflection;
-    })
+    }),
 });

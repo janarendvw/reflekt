@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+import Link from "next/link";
+import React from "react";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -12,28 +13,26 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { trpc } from "@/app/_trpc/client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-
+type Props = {};
 type Inputs = {
+  name: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 };
 
-const LoginForm = () => {
+function SignUpForm({}: Props) {
   const {
     register, handleSubmit, watch, formState: { errors }
-
   } = useForm<Inputs>();
-  const router = useRouter();
-  const mutation = trpc.auth.loginUser.useMutation();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutation.mutateAsync(data).then(() => {
-      router.push("/reflections");
-    });
-  };
+  const mutation = trpc.auth.registerUser.useMutation();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await mutation.mutateAsync(
+      data
+    );
+  }
 
   return (
     <Card className="max-w-xs">
@@ -46,6 +45,14 @@ const LoginForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
+          <div>
+            <Label htmlFor="login-name">Name</Label>
+            <Input
+              {...register("name", { required: true })}
+              id="login-name"
+              placeholder="Enter your name"
+            />
+          </div>
           <div>
             <Label htmlFor="login-email">Email</Label>
             <Input
@@ -63,24 +70,30 @@ const LoginForm = () => {
               id="login-password"
               placeholder="Enter your password"
             />
-            {errors.password && <span className="text-xs text-destructive">This field is required</span>}
+          </div>
+          <div>
+            <Label htmlFor="login-password-confirmm">Confirm password</Label>
+            <Input
+              type="password"
+              {...register("passwordConfirm", { required: true })}
+              id="login-password-confirm"
+              placeholder="Confirm your password"
+            />
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between gap-4">
           <span className="text-xs">
-            No account?{" "}
-            <Link className="underline" href="/signup">
-              Sign up
+            Already have an account?{" "}
+            <Link className="underline" href="/login">
+              Log in
             </Link>{" "}
             here.
           </span>
-          <Button type="submit" disabled={mutation.isPending} >
-            Log in
-          </Button>
+          <Button type="submit">Sign up</Button>
         </CardFooter>
       </form>
     </Card>
   );
-};
+}
 
-export default LoginForm;
+export default SignUpForm;

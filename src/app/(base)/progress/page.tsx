@@ -1,13 +1,16 @@
 import Line from "@/components/charts/line";
 import React from "react";
 import { ActionPoint } from "@prisma/client";
-import { serverClient } from "@/app/_trpc/serverClient";
+import { createContext } from "@/server/context";
+import { createCaller } from "@/server";
 
 type Props = {};
 
 export default async function Page({}: Props) {
+  const ctx = await createContext();
+  const serverClient = createCaller(ctx);
 
-  const actionPoints: ActionPoint[] = await serverClient.actionpoint.getAllActionPoints().then((res) => {
+  const actionPoints: ActionPoint[] = await serverClient.actionpoint.getAll().then((res) => {
     return res;
   });
 

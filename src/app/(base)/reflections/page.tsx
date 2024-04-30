@@ -7,16 +7,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { serverClient } from "@/app/_trpc/serverClient";
+
 import { DataTable } from "@/components/ui/data-table";
+import { createContext } from "@/server/context";
+import { createCaller } from "@/server";
 
 type Props = {};
 
 export default async function page({}: Props) {
-  const data = await serverClient.reflection.getFirstNReflections({ n: 10 });
-  const reflectionCount = await serverClient.reflection.getReflectionCount();
-  const actionPointCount = await serverClient.actionpoint.getActionPointCount();
-  const resolvedActionPointCount = await serverClient.actionpoint.getResolvedActionPointCount();
+
+  const ctx = await createContext();
+  const serverClient = createCaller(ctx);
+
+  const data = await serverClient.reflection.getAll()
+  const reflectionCount = await serverClient.reflection.getCount();
+  const actionPointCount = await serverClient.actionpoint.getCount();
+  const resolvedActionPointCount = await serverClient.actionpoint.getResolvedCount();
   return (
     <>
   

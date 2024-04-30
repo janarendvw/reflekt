@@ -1,3 +1,4 @@
+"use client"
 import React, { Suspense } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -8,19 +9,26 @@ import {
   DropdownMenuShortcut,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
-import { serverClient } from "@/app/_trpc/serverClient";
 import NavbarBreadcrumb from "./ui/navbar-breadcrumb";
+import { trpc } from "@/app/_trpc/client";
 import { Button } from "./ui/button";
-import Link from "next/link";
-import Icon from "./ui/icon";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
-async function Navbar({}: Props) {
-  const user = await serverClient.getFirstUser().then((res) => res);
+ function Navbar({}: Props) {
+  const router = useRouter();
+  const user = trpc.getMe.useQuery().data?.data.user
+  const mutation = trpc.auth.logoutUser.useMutation();
+
+  const handleLogout = async () => {
+    mutation.mutateAsync().then(() => {
+      router.push("/login");
+    });
+  };
 
   return (
     <>
@@ -51,15 +59,23 @@ async function Navbar({}: Props) {
                   {user?.email ? user.email : ""}
                 </h2>
               </DropdownMenuLabel>
-              <Separator />
+              <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem>
                   Profile
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="text-destructive">
+                <Button variant={"link"} onClick={() => handleLogout()}>Logout</Button>
+                  <DropdownMenuShortcut>⇧⌘L</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
+
         </div>
       </nav>
       <Separator />

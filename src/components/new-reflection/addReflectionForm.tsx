@@ -14,7 +14,7 @@ type Props = {
   selectedType: ReflectionModelType;
 };
 
-function AddReflectionForm({selectedType}: Props) {
+function AddReflectionForm({ selectedType }: Props) {
   const [content, setContent] = useState<string[]>([]);
   const [title, setTitle] = useState<string>("");
   const [selectedSkills, setSelectedSkills] = useState<Skills[]>([]);
@@ -22,25 +22,24 @@ function AddReflectionForm({selectedType}: Props) {
 
   const skills = Object.values(Skills);
 
-  const mutation = trpc.reflection.createReflection.useMutation();
+  const mutation = trpc.reflection.create.useMutation();
 
-  const handleSubmit = () => {
-    mutation.mutate({ title, content: content, skills: selectedSkills, reflectionType: selectedType});
-  };
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      setContent([]);
-      setSelectedSkills([]);
+  const handleSubmit = async () => {
+    await mutation.mutateAsync({
+      title,
+      content: content,
+      skills: selectedSkills,
+      reflectionType: selectedType,
+    }).then(() => {
       router.push("/reflections");
-    }
-  }, [mutation.isSuccess, router]);
+    })
+  };
 
   return (
     <>
       <div className="flex flex-col gap-8">
         <div className="flex h-full gap-8">
-          <div className="w-2/3 flex flex-col gap-4">
+          <div className="flex w-2/3 flex-col gap-4">
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
@@ -49,9 +48,13 @@ function AddReflectionForm({selectedType}: Props) {
               placeholder="Title"
               className="mb-8"
             />
-            <PresetModel content={content} setContent={setContent} type={selectedType} />
+            <PresetModel
+              content={content}
+              setContent={setContent}
+              type={selectedType}
+            />
           </div>
-          <div className="flex flex-col gap-4 max-w-md">
+          <div className="flex max-w-md flex-col gap-4">
             <h3 className="mt-8 font-semibold">Select relevant skills</h3>
             <div className="flex flex-wrap gap-1">
               {skills.map((skill) => (
